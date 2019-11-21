@@ -343,3 +343,17 @@ def test_overriding_getattr():
 
     my_dict = {"abc": "xyz"}
     assert(my_dict.abc == "xyz")
+
+@skip_legacy
+def test_overriding_setattr():
+    import ctypes
+    """TODO: docstring"""
+    def setter(self, x, val):
+        super(tuple, self).__setattr__(x, val)
+        return ctypes.c_int(0)
+        # object.__setattr__(self, x, val)
+    curse(tuple, "__setattr__", setter)
+
+    my_dict = ()
+    my_dict.abc = "xyz"
+    assert(my_dict.abc == "xyz")

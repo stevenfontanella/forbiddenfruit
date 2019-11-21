@@ -203,7 +203,8 @@ PyTypeObject._fields_ = [
     ('tp_hash', ctypes.CFUNCTYPE(ctypes.c_int64, PyObject_p)),
     ('tp_call', ctypes.CFUNCTYPE(PyObject_p, PyObject_p, PyObject_p, PyObject_p)),
     ('tp_str', ctypes.CFUNCTYPE(PyObject_p, PyObject_p)),
-    ('tp_getattr', ctypes.CFUNCTYPE(PyObject_p, PyObject_p, PyObject_p))
+    ('tp_getattro', ctypes.CFUNCTYPE(PyObject_p, PyObject_p, PyObject_p)),
+    ('tp_setattro', ctypes.CFUNCTYPE(ctypes.c_int, PyObject_p, PyObject_p, PyObject_p))
     # ...
 ]
 
@@ -318,7 +319,8 @@ for override in [as_number, as_sequence, as_async]:
 # divmod isn't a dunder, still make it overridable
 override_dict['divmod()'] = ('tp_as_number', "nb_divmod")
 override_dict['__str__'] = ('tp_str', "tp_str")
-override_dict['__getattr__'] = ('tp_getattr', "tp_getattr")
+override_dict['__getattr__'] = ('tp_getattro', "tp_getattro")
+override_dict['__setattr__'] = ('tp_setattro', "tp_setattro")
 
 
 def _is_dunder(func_name):
